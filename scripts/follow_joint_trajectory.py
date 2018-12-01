@@ -107,10 +107,10 @@ class JointTrajectoryActionController():
         self.num_joints = len(self.joint_names)
 
         # Sends commands to GummiArm
-        self.jointCmdPub = rospy.Publisher("gummi/joint_commands", JointState,  queue_size=1)
+        self.jointCmdPub = rospy.Publisher("joint_commands", JointState,  queue_size=1)
 
         # Reads GummiArm's current joint_states
-        self.subscribe = rospy.Subscriber('gummi/joint_states', JointState, self.read_joint_states)
+        self.subscribe = rospy.Subscriber('joint_states', JointState, self.read_joint_states)
 
         self.cmd_rate = rospy.Rate(self.update_command_rate)
 
