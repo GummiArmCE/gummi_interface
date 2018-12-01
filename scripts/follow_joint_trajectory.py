@@ -107,10 +107,10 @@ class JointTrajectoryActionController():
         self.num_joints = len(self.joint_names)
 
         # Sends commands to GummiArm
-        self.jointCmdPub = rospy.Publisher("/gummi/joint_commands", JointState,  queue_size=1)
+        self.jointCmdPub = rospy.Publisher("gummi/joint_commands", JointState,  queue_size=1)
 
         # Reads GummiArm's current joint_states
-        self.subscribe = rospy.Subscriber('joint_states', JointState, self.read_joint_states)
+        self.subscribe = rospy.Subscriber('gummi/joint_states', JointState, self.read_joint_states)
 
         self.cmd_rate = rospy.Rate(self.update_command_rate)
 
@@ -468,7 +468,7 @@ if __name__ == '__main__':
 
     # The controllers below must match the ones from Moveit!
     #controllers = ['shoulder_yaw','shoulder_roll','shoulder_pitch','upperarm_roll','elbow','forearm_roll','wrist_pitch']
-    controllers = rospy.get_param('/moveit/move_group/controller_list')[0].get('joints','none')
+    controllers = rospy.get_param('move_group/controller_list')[0].get('joints','none')
     rospy.loginfo("Found controllers: " + str(controllers))
     print controllers
     controller_namespace = 'gummi_right_arm_controller'
