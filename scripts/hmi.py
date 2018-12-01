@@ -95,18 +95,21 @@ class MyFrame(wx.Frame):
 
         self.gui_available = True
 
+        self.effortSign = 1
+
     def onChecked(self, e):
         cb = e.GetEventObject()
         if cb.GetValue():
             for name in self.joints.keys():
                 self.joints[name]['sldr_pos'].Enable(False)
                 self.joints[name]['sldr_coc'].Enable(False)
-            self.sendCommand(False)
+            self.effortSign = -1
+            self.sendCommand(True)
         else:
             for name in self.joints.keys():
                 self.joints[name]['sldr_pos'].Enable(True)
                 self.joints[name]['sldr_coc'].Enable(True)
-
+            self.effortSign = 1
             self.sendCommand(True)
 
     def OnRefresh(self, evt):
@@ -133,7 +136,7 @@ class MyFrame(wx.Frame):
             with self.gui_lock:
                 msg.position = [self.joints[name]['sldr_pos'].GetValue()*(pi/180.0) for name in self.joints.keys()]
                 msg.name = self.joints.keys()
-                msg.effort = [self.joints[name]['sldr_coc'].GetValue()/100.0 for name in self.joints.keys()]
+                msg.effort = [self.effortSign*(self.joints[name]['sldr_coc'].GetValue()/100.0) for name in self.joints.keys()]
                 msg.velocity = [0]*len(self.joints.keys())
 
             msg.header.stamp = rospy.Time.now()
