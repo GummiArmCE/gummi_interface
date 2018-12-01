@@ -24,7 +24,7 @@ class MyFrame(wx.Frame):
         wx.Frame.__init__(self, parent, id, title, wx.DefaultPosition, (1400,700))
         panel = wx.Panel(self, -1)
 
-        self.joints = rospy.get_param("/gummi/joints")
+        self.joints = rospy.get_param("gummi/joints")
 
         rospy.init_node('GummiHMI', anonymous=False, disable_signals=True)
 
@@ -35,8 +35,8 @@ class MyFrame(wx.Frame):
             self.joints[name]['text'] = wx.StaticText(panel, label=name, pos= wx.DefaultPosition)
             self.joints[name]['sldr_pos'] = wx.Slider(panel,
                                                       value = 0* (180/pi),
-                                                      minValue = rospy.get_param("/gummi/"+name+"/minAngle") * (180/pi),
-                                                      maxValue = rospy.get_param("/gummi/"+name+"/maxAngle") * (180/pi),
+                                                      minValue = rospy.get_param("gummi/"+name+"/minAngle") * (180/pi),
+                                                      maxValue = rospy.get_param("gummi/"+name+"/maxAngle") * (180/pi),
                                                       pos = wx.DefaultPosition,
                                                       size = (150, -1),
                                                       style = wx.SL_AUTOTICKS | wx.SL_HORIZONTAL | wx.SL_LABELS)
@@ -90,8 +90,8 @@ class MyFrame(wx.Frame):
         panel.SetSizer(lastbox)
         lastbox.Fit(panel)
 
-        self.joint_commandsPub = rospy.Publisher("/gummi/joint_commands", JointState,  latch=True, queue_size=1)
-        self.subscriber = rospy.Subscriber('/gummi/joint_states', JointState, self.cmdCallback)
+        self.joint_commandsPub = rospy.Publisher("gummi/joint_commands", JointState,  latch=True, queue_size=1)
+        self.subscriber = rospy.Subscriber('gummi/joint_states', JointState, self.cmdCallback)
 
         self.gui_available = True
 
