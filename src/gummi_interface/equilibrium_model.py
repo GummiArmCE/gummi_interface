@@ -30,10 +30,10 @@ class EquilibriumModel:
         self.commandFlexor = 0
         self.commandExtensor = 0
         self.dEquilibrium = 0
-   
+
         self.dCocontraction = 0
         self.cCocontraction = 0
- 
+
         self.maxCocontraction = 1.0
         self.dEqVelCalibration = 1.0
 
@@ -42,7 +42,7 @@ class EquilibriumModel:
 
     def getCocontractionForAlphas(self):
         return (self.extensor.getJointAngle()*self.signExtensor + self.flexor.getJointAngle()*self.signFlexor)/pi
-        
+
     def createCommand(self):
         equilibrium = self.dEquilibrium
         cocontraction = self.cCocontraction
@@ -65,15 +65,16 @@ class EquilibriumModel:
         self.dEquilibrium = self.dEquilibrium + vel * self.sign * self.dEqVelCalibration;
 
     def calculateEqVelCalibration(self, jointRange):
-        eqRange = 2 * 2.0
-        self.dEqVelCalibration = eqRange/jointRange;
-        print("Equilibrium to joint velocity calibration: " + str(self.dEqVelCalibration) + ".")
+        if rospy.has_param("~" + self.name + "/equilibrium/eqVelCalibration"):
+            self.dEqVelCalibration = rospy.get_param("~" + self.name + "/equilibrium/eqVelCalibration")
+            rospy.loginfo("Joint " + str(self.name) + ", using equilibrium to joint velocity calibration from config file: " + str(self.dEqVelCalibration) + ".")
+        else:
+            eqRange = 2 * 2.0
+            self.dEqVelCalibration = eqRange/jointRange;
+            rospy.loginfo("Using default equilibrium to joint velocity calibration: " + str(self.dEqVelCalibration) + ".")
 
     def getDesiredEquilibrium(self):
         return self.dEquilibrium
 
     def getCommandedCocontraction(self):
         return self.cCocontraction
-        
-
-
