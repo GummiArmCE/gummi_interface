@@ -56,7 +56,7 @@ class DirectDrive:
         self.publishCommand()
 
     def getJointAngle(self):
-        return self.angle.getEncoder()
+        return self.angle.getDesired()
 
     def getJointVelocity(self):
         return self.angle.getEncoderVelocity()
