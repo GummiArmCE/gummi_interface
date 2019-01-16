@@ -19,6 +19,7 @@ class DirectDrive:
         else:
             minRange = rospy.get_param("~" + name + "/minAngle")
             maxRange = rospy.get_param("~" + name + "/maxAngle")
+            self.restingPoseAngle = rospy.get_param("~" + self.name + "/restingPoseAngle")
 
         self.angle = JointAngle(name, 1, minRange, maxRange, False)
 
@@ -68,3 +69,6 @@ class DirectDrive:
             te(limit)
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
+
+    def getRestingPoseAngle(self):
+        return self.restingPoseAngle

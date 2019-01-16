@@ -145,7 +145,7 @@ class Gummi:
                 self.joints[name]['controller'].servoTo(self.joints[name]['controller'].getRestingPoseAngle(),
                                                      self.joints[name]['effort'])
             else:
-                self.joints[name]['controller'].servoTo(0)
+                self.joints[name]['controller'].servoTo(self.joints[name]['controller'].getRestingPoseAngle())
 
 
     def setCollisionResponses(self, **args):
